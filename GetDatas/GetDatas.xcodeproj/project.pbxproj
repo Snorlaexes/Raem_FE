@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CA107622C778AC40080FC9A /* S020_test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CA107592C778AC40080FC9A /* S020_test.csv */; };
 		0CD786AB2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */; };
 		0CD786AD2C772246004677B7 /* MlTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786AC2C772246004677B7 /* MlTestView.swift */; };
-		0CD786BC2C7722E8004677B7 /* S020_test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 0CD786B32C7722E8004677B7 /* S020_test.csv */; };
-		0CD786BD2C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0CD786B42C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld */; };
 		3B05422A2C75CB3700A4CB0D /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0542292C75CB3700A4CB0D /* BackButton.swift */; };
 		3B05422C2C75CB9200A4CB0D /* TopNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B05422B2C75CB9200A4CB0D /* TopNav.swift */; };
+		3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2555DC2C7727B400F298BF /* DataManager.swift */; };
+		3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3554032C776E8D005FA172 /* SleepDataView.swift */; };
 		3B445A042BF0F0E900AFA631 /* GetDatasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */; };
 		3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A072BF0F0EA00AFA631 /* Assets.xcassets */; };
 		3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B445A0A2BF0F0EA00AFA631 /* Preview Assets.xcassets */; };
@@ -67,12 +68,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CA107592C778AC40080FC9A /* S020_test.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = S020_test.csv; sourceTree = "<group>"; };
 		0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MyTabularClassifier0814_2.mlmodel; sourceTree = "<group>"; };
 		0CD786AC2C772246004677B7 /* MlTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MlTestView.swift; sourceTree = "<group>"; };
-		0CD786B32C7722E8004677B7 /* S020_test.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = S020_test.csv; sourceTree = "<group>"; };
-		0CD786B72C7722E8004677B7 /* SleepStagePredictor.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SleepStagePredictor.xcdatamodel; sourceTree = "<group>"; };
 		3B0542292C75CB3700A4CB0D /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		3B05422B2C75CB9200A4CB0D /* TopNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNav.swift; sourceTree = "<group>"; };
+		3B2555DC2C7727B400F298BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		3B3554032C776E8D005FA172 /* SleepDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepDataView.swift; sourceTree = "<group>"; };
 		3B445A002BF0F0E900AFA631 /* GetDatas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GetDatas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B445A032BF0F0E900AFA631 /* GetDatasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDatasApp.swift; sourceTree = "<group>"; };
 		3B445A072BF0F0EA00AFA631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -125,13 +127,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0CD786B62C7722E8004677B7 /* SleepStagePredictor */ = {
+		0CA1075C2C778AC40080FC9A /* SleepStagePredictor */ = {
 			isa = PBXGroup;
 			children = (
-				0CD786B32C7722E8004677B7 /* S020_test.csv */,
-				0CD786B42C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld */,
+				0CA107592C778AC40080FC9A /* S020_test.csv */,
 			);
-			path = SleepStagePredictor;
+			name = SleepStagePredictor;
+			path = "../../../Raem_FE 2/GetDatas/GetDatas/SleepStagePredictor";
 			sourceTree = "<group>";
 		};
 		3B0542222C75CAD100A4CB0D /* Component */ = {
@@ -164,7 +166,7 @@
 		3B445A022BF0F0E900AFA631 /* GetDatas */ = {
 			isa = PBXGroup;
 			children = (
-				0CD786B62C7722E8004677B7 /* SleepStagePredictor */,
+				0CA1075C2C778AC40080FC9A /* SleepStagePredictor */,
 				0CD786AA2C772240004677B7 /* MyTabularClassifier0814_2.mlmodel */,
 				0CD786AC2C772246004677B7 /* MlTestView.swift */,
 				3B0542222C75CAD100A4CB0D /* Component */,
@@ -200,6 +202,7 @@
 			children = (
 				3B869B752BF4730B00890FB8 /* GetDatas-Watch-App-Info.plist */,
 				3B90127B2BF439E3001253B5 /* GetDatas Watch App.entitlements */,
+				3B2555DC2C7727B400F298BF /* DataManager.swift */,
 				3B445A152BF0F0EA00AFA631 /* GetDatasApp.swift */,
 				3B445A192BF0F0EB00AFA631 /* Assets.xcassets */,
 				3B445A1B2BF0F0EB00AFA631 /* Preview Content */,
@@ -219,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				3BF207EA2C735CA4000DEDA9 /* RecordView.swift */,
+				3B3554032C776E8D005FA172 /* SleepDataView.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -391,7 +395,7 @@
 			files = (
 				3B445A0B2BF0F0EA00AFA631 /* Preview Assets.xcassets in Resources */,
 				3B445A082BF0F0EA00AFA631 /* Assets.xcassets in Resources */,
-				0CD786BC2C7722E8004677B7 /* S020_test.csv in Resources */,
+				0CA107622C778AC40080FC9A /* S020_test.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,10 +424,10 @@
 				739AE9722C700ADE006BAF47 /* SleepRatingView.swift in Sources */,
 				736119682C68B02D00F3FF11 /* CustomTabBar.swift .swift in Sources */,
 				739AE96E2C70077B006BAF47 /* AccountDeletionView.swift in Sources */,
-				0CD786BD2C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld in Sources */,
 				3BF207EB2C735CA4000DEDA9 /* RecordView.swift in Sources */,
 				736119592C68A59300F3FF11 /* LoginView.swift in Sources */,
 				736119522C68A23300F3FF11 /* Colors.swift in Sources */,
+				3B3554042C776E8D005FA172 /* SleepDataView.swift in Sources */,
 				736119662C68AE5800F3FF11 /* HomeView.swift in Sources */,
 				736119482C68948100F3FF11 /* LoadingView.swift in Sources */,
 				7361196C2C68B6C400F3FF11 /* SleepTrackingView.swift in Sources */,
@@ -444,6 +448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B2555DD2C7727B400F298BF /* DataManager.swift in Sources */,
 				3B445A162BF0F0EA00AFA631 /* GetDatasApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -771,20 +776,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		0CD786B42C7722E8004677B7 /* SleepStagePredictor.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				0CD786B72C7722E8004677B7 /* SleepStagePredictor.xcdatamodel */,
-			);
-			currentVersion = 0CD786B72C7722E8004677B7 /* SleepStagePredictor.xcdatamodel */;
-			name = SleepStagePredictor.xcdatamodeld;
-			path = "/Users/m/IT/2024-컴공졸프2/Raem_FE/GetDatas/GetDatas/SleepStagePredictor/SleepStagePredictor.xcdatamodeld";
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 3B4459F82BF0F0E900AFA631 /* Project object */;
 }

@@ -15,12 +15,8 @@ struct LoadingView: View {
                         .foregroundColor(.deepNavy)
                     Spacer()
                 }
-                .background(
-                    GeometryReader { geometry in
-                        Color.white
-                            .frame(width: geometry.size.width) // 가로로 100% 채우기
-                    }
-                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     // 2초 후에 CarouselView로 이동
@@ -30,6 +26,8 @@ struct LoadingView: View {
                 }
             }
         }
+        .background(Color.white) // 배경색을 흰색으로 설정
+        .edgesIgnoringSafeArea(.all) // 전체 화면에 흰색이 적용되도록 설정
     }
 }
 

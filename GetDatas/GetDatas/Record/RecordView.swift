@@ -1,7 +1,6 @@
 import SwiftUI
 import WatchConnectivity
 
-// 측정 데이터를 저장하기 위한 구조체
 struct MeasurementData: Codable, Identifiable {
     var id = UUID()
     var heartRate: Double
@@ -12,7 +11,6 @@ struct MeasurementData: Codable, Identifiable {
     var timestamp: String
 }
 
-// iPhone과의 통신을 관리하는 클래스
 class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func sessionDidBecomeInactive(_ session: WCSession) {}
     
@@ -32,9 +30,10 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     
     func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
         do {
-            let data = try JSONDecoder().decode([MeasurementData].self, from: messageData)
+            let receivedData = try JSONDecoder().decode([MeasurementData].self, from: messageData)
+            
             DispatchQueue.main.async {
-                self.receivedData = data
+                self.receivedData.append(contentsOf: receivedData)
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")
@@ -42,7 +41,16 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     func exportDataToCSV() -> URL? {
-        let fileName = "measurement_data.csv"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.string(from: Date())
+        
+        // Retrieve the user's name from UserDefaults or use device name as a fallback
+        let userName = UserDefaults.standard.string(forKey: "userName") ?? UIDevice.current.name
+        
+        // Set the file name as "Name(Date).csv"
+        let fileName = "\(userName)(\(date)).csv"
+        
         let path = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         var csvText = "Timestamp,Heart Rate,Decibel Level,Acceleration X,Acceleration Y,Acceleration Z\n"
         
@@ -59,27 +67,53 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             return nil
         }
     }
+    
+    func clearReceivedData() {
+        receivedData.removeAll()
+    }
 }
 
-// RecordView: 데이터를 표시하고 CSV로 내보내는 뷰
+struct SettingsView: View {
+    @AppStorage("userName") var userName: String = ""
+    
+    var body: some View {
+        Form {
+            TextField("이름 입력", text: $userName)
+        }
+        .navigationTitle("설정")
+    }
+}
+
 struct RecordView: View {
     @ObservedObject var connectivityManager = iPhoneConnectivityManager()
     
     var body: some View {
         VStack {
-            Button("CSV로 내보내기") {
-                if let csvURL = connectivityManager.exportDataToCSV() {
-                    let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
-                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                       let rootVC = windowScene.windows.first?.rootViewController {
-                        rootVC.present(activityVC, animated: true, completion: nil)
+            if !connectivityManager.receivedData.isEmpty {
+                HStack {
+                    Button("CSV로 내보내기") {
+                        if let csvURL = connectivityManager.exportDataToCSV() {
+                            let activityVC = UIActivityViewController(activityItems: [csvURL], applicationActivities: nil)
+                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                               let rootVC = windowScene.windows.first?.rootViewController {
+                                rootVC.present(activityVC, animated: true)
+                            }
+                        }
                     }
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    
+                    Button("데이터 삭제하기") {
+                        connectivityManager.clearReceivedData()
+                    }
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
                 }
             }
-            .padding()
-            .background(Color.green)
-            .foregroundColor(.white)
-            .cornerRadius(10)
             
             List(connectivityManager.receivedData) { entry in
                 VStack(alignment: .leading) {
@@ -94,8 +128,10 @@ struct RecordView: View {
             }
         }
         .navigationTitle("실시간 데이터")
-        .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
-        .navigationBarBackButtonHidden(true)
-        .globalPadding()
+        .toolbar {
+            NavigationLink(destination: SettingsView()) {
+                Text("설정")
+            }
+        }
     }
 }
