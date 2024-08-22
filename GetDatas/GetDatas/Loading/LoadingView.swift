@@ -15,7 +15,12 @@ struct LoadingView: View {
                         .foregroundColor(.deepNavy)
                     Spacer()
                 }
-                .background(Color.white)
+                .background(
+                    GeometryReader { geometry in
+                        Color.white
+                            .frame(width: geometry.size.width) // 가로로 100% 채우기
+                    }
+                )
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     // 2초 후에 CarouselView로 이동
@@ -33,4 +38,3 @@ struct LoadingView_Previews: PreviewProvider {
         LoadingView()
     }
 }
-

@@ -8,42 +8,24 @@ struct HomeView: View {
     var body: some View {
         VStack(spacing: 20) {
             Spacer(minLength: 50)
-
-            // 상단 프로필 및 타이틀
-            HStack {
-                Text("raem")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(Color.deepNavy)
-                    .padding(.leading, 16) // 왼쪽 여백 추가
-
-                Spacer()
-
-                Button(action: {
-                    showAccountManagementView = true  // AccountManagementView로 이동
-                }) {
-                    Image("mypage")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .padding(.trailing, 16) // 오른쪽 여백 추가
-                }
-            }
-
+            TopNav()
+            
             // 환영 메시지
             VStack(alignment: .leading, spacing: 4) {
                 Text("잠만보님, 안녕하세요!")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(Font.system(size: 20, weight: .bold))
                     .foregroundColor(.black)
 
                 HStack {
                     Text("잠만보님의 최적 수면 시간은 7시간 입니다.")
-                        .font(.system(size: 14))
+                        .font(Font.system(size: 14))
                         .foregroundColor(.gray)
                     Spacer()
                     Button(action: {
                         // 더보기 액션 추가
                     }) {
                         Text("더보기")
-                            .font(.system(size: 14))
+                            .font(Font.system(size: 14))
                             .foregroundColor(Color.mint)
                     }
                 }
@@ -54,14 +36,14 @@ struct HomeView: View {
             VStack(spacing: 12) {
                 HStack {
                     Text("최근 수면 정보")
-                        .font(.system(size: 14, weight: .bold))
+                        .font(Font.system(size: 14, weight: .bold))
                         .foregroundColor(.black)
                     Spacer()
                     Button(action: {
                         // 분석 보기 액션 추가
                     }) {
                         Text("분석 보기")
-                            .font(.system(size: 14))
+                            .font(Font.system(size: 14))
                             .foregroundColor(Color.mint)
                     }
                 }
@@ -75,11 +57,11 @@ struct HomeView: View {
                                 .frame(width: 24, height: 24)
                             Spacer() // 간격 조정
                             Text("6시간 52분")
-                                .font(.system(size: 18, weight: .bold))
+                                .font(Font.system(size: 18, weight: .bold))
                                 .foregroundColor(.black)
                         }
                         Text("Time in sleep")
-                            .font(.system(size: 12))
+                            .font(Font.system(size: 12))
                             .foregroundColor(.gray)
                     }
 
@@ -90,11 +72,11 @@ struct HomeView: View {
                                 .frame(width: 24, height: 24)
                             Spacer() // 간격 조정
                             Text("25분")
-                                .font(.system(size: 18, weight: .bold))
+                                .font(Font.system(size: 18, weight: .bold))
                                 .foregroundColor(.black)
                         }
                         Text("Fell asleep")
-                            .font(.system(size: 12))
+                            .font(Font.system(size: 12))
                             .foregroundColor(.gray)
                     }
                 }
@@ -108,11 +90,11 @@ struct HomeView: View {
                                 .frame(width: 24, height: 24)
                             Spacer() // 간격 조정
                             Text("7시간 23분")
-                                .font(.system(size: 18, weight: .bold))
+                                .font(Font.system(size: 18, weight: .bold))
                                 .foregroundColor(.black)
                         }
                         Text("Went to bed")
-                            .font(.system(size: 12))
+                            .font(Font.system(size: 12))
                             .foregroundColor(.gray)
                     }
 
@@ -123,11 +105,11 @@ struct HomeView: View {
                                 .frame(width: 24, height: 24)
                             Spacer() // 간격 조정
                             Text("07시 12분")
-                                .font(.system(size: 18, weight: .bold))
+                                .font(Font.system(size: 18, weight: .bold))
                                 .foregroundColor(.black)
                         }
                         Text("Wake up time")
-                            .font(.system(size: 12))
+                            .font(Font.system(size: 12))
                             .foregroundColor(.gray)
                     }
                 }
@@ -152,10 +134,10 @@ struct HomeView: View {
                             .foregroundColor(.gray)
                     }
                     Text("취침 시간")
-                        .font(.system(size: 14, weight: .bold))
+                        .font(Font.system(size: 14, weight: .bold))
                         .foregroundColor(.black)
                     Text("12:20 AM")
-                        .font(.system(size: 14))
+                        .font(Font.system(size: 14))
                         .foregroundColor(.gray)
                     Toggle(isOn: .constant(true)) {
                         Text("")
@@ -178,10 +160,10 @@ struct HomeView: View {
                             .foregroundColor(.gray)
                     }
                     Text("알람")
-                        .font(.system(size: 14, weight: .bold))
+                        .font(Font.system(size: 14, weight: .bold))
                         .foregroundColor(.black)
                     Text("08:30 AM - 09:00 AM")
-                        .font(.system(size: 14))
+                        .font(Font.system(size: 14))
                         .foregroundColor(.gray)
                     Toggle(isOn: .constant(false)) {
                         Text("")
@@ -203,7 +185,7 @@ struct HomeView: View {
                 showSleepTrackingView = true  // SleepTrackingView로 이동
             }) {
                 Text("지금 취침하기")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(Font.system(size: 18, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
                     .background(Color.deepNavy)

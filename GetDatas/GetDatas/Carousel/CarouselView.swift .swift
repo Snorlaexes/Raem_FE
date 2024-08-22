@@ -4,6 +4,7 @@ struct CarouselView: View {
     @State private var currentIndex = 0
     @State private var showLoginView = false
     @State private var showRegisterView = false
+    @State private var showRecordView = false
     
     let pages: [CarouselPage] = [
         CarouselPage(imageName: "page1", title: "편안한 수면", description: "숙면을 위한 완벽한 환경을 제공합니다."),
@@ -13,86 +14,114 @@ struct CarouselView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                TabView(selection: $currentIndex) {
-                    ForEach(pages.indices, id: \.self) { index in
-                        VStack(spacing: 20) {
-                            Spacer()
-                            
-                            Text(pages[index].title)
-                                .font(.system(size: 24, weight: .bold))
-                                .padding(.horizontal, 20)
-                            
-                            Image(pages[index].imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 200)
-                                .padding(.horizontal, 20)
-                            
-                            Text(pages[index].description)
-                                .font(.system(size: 14))
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 40)
-                            
-                            Spacer()
-                            
-                            // 인디케이터
-                            HStack(spacing: 8) {
-                                ForEach(pages.indices, id: \.self) { pageIndex in
-                                    Circle()
-                                        .fill(pageIndex == currentIndex ? Color.deepNavy : Color.gray.opacity(0.5))
-                                        .frame(width: 8, height: 8)
+            ZStack {
+                VStack {
+                    GeometryReader { geometry in
+                        TabView(selection: $currentIndex) {
+                            ForEach(pages.indices, id: \.self) { index in
+                                VStack(spacing: 20) {
+                                    Spacer()
+                                    
+                                    Text(pages[index].title)
+                                        .font(.system(size: 24, weight: .bold))
+                                    
+                                    Image(pages[index].imageName)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 200)
+                                    
+                                    Text(pages[index].description)
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.gray)
+                                        .multilineTextAlignment(.center)
+                                    
+                                    Spacer()
                                 }
+                                .tag(index)
                             }
-                            .padding(.bottom, 20)
-                            
-                            // 로그인과 회원가입 버튼
-                            VStack(spacing: 16) {
-                                Button(action: {
-                                    showLoginView = true
-                                }) {
-                                    Text("로그인")
-                                        .font(.system(size: 18, weight: .bold))
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 50)
-                                        .background(Color.deepNavy)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                }
-                                .padding(.horizontal, 20)
-                                
-                                Button(action: {
-                                    showRegisterView = true
-                                }) {
-                                    Text("회원가입")
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 50)
-                                        .background(Color.white)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.deepNavy, lineWidth: 2)
-                                        )
-                                        .foregroundColor(.deepNavy)
-                                }
-                                .padding(.horizontal, 20)
-                            }
-                            .padding(.bottom, 50)
-                            .background(
-                                NavigationLink(destination: LoginView(), isActive: $showLoginView) {
-                                    EmptyView()
-                                }
-                            )
-                            .background(
-                                NavigationLink(destination: RegisterView(), isActive: $showRegisterView) {
-                                    EmptyView()
-                                }
-                            )
                         }
-                        .tag(index)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                        .frame(height: geometry.size.height * 0.8) // 전체 화면의 60% 높이로 설정
                     }
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                
+                // 로그인과 회원가입 버튼을 오버레이로 추가
+                VStack {
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 16) {
+                        // 페이지네이션
+                        HStack(spacing: 8) {
+                            ForEach(pages.indices, id: \.self) { pageIndex in
+                                Circle()
+                                    .fill(pageIndex == currentIndex ? Color.deepNavy : Color.gray.opacity(0.5))
+                                    .frame(width: 8, height: 8)
+                            }
+                        }
+                        .padding(.bottom, 80)
+                        
+                        Button(action: {
+                            showLoginView = true
+                        }) {
+                            Text("로그인")
+                                .font(.system(size: 18, weight: .bold))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color.deepNavy)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        
+                        Button(action: {
+                            showRegisterView = true
+                        }) {
+                            Text("회원가입")
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                                .background(Color.white)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.deepNavy, lineWidth: 2)
+                                )
+                                .foregroundColor(.deepNavy)
+                        }
+                    }
+                    .padding(.bottom, 70)
+                    .background(
+                        NavigationLink(destination: LoginView(), isActive: $showLoginView) {
+                            EmptyView()
+                        }
+                    )
+                    .background(
+                        NavigationLink(destination: RegisterView(), isActive: $showRegisterView) {
+                            EmptyView()
+                        }
+                    )
+                    .globalPadding()
+                }
+                
+                // 오른쪽 아래의 원형 버튼 추가
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        NavigationLink(destination: RecordView(), isActive: $showRecordView) {
+                            Button(action: {
+                                showRecordView = true
+                            }) {
+                                Image(systemName: "plus")
+                                    .font(.system(size: 24))
+                                    .frame(width: 60, height: 60)
+                                    .foregroundColor(.white)
+                                    .background(Color.deepNavy)
+                                    .cornerRadius(30)
+                                    .shadow(radius: 10)
+                            }
+                            .padding()
+                        }
+                    }
+                }
             }
             .background(Color.white)
             .edgesIgnoringSafeArea(.all)
@@ -113,4 +142,3 @@ struct CarouselView_Previews: PreviewProvider {
         CarouselView()
     }
 }
-

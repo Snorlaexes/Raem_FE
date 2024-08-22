@@ -15,23 +15,24 @@ struct RegisterView: View {
             Text(attributedTitle)
                 .font(.system(size: 24, weight: .bold))
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
+                .padding(.bottom, 20) 
             
             // 닉네임 입력 필드
             VStack(alignment: .leading, spacing: 8) {
                 TextField("사용하실 닉네임 입력", text: $nickname)
-                    .padding()
+                    .frame(height: 50)
+                    .padding(.horizontal, 15)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
             }
-            .padding(.horizontal, 24)
 
             // 이메일 입력 필드
             VStack(alignment: .leading, spacing: 8) {
                 TextField("이메일 주소 입력", text: $email)
-                    .padding()
+                    .frame(height: 50)
+                    .padding(.horizontal, 15)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -39,29 +40,28 @@ struct RegisterView: View {
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
             }
-            .padding(.horizontal, 24)
 
             // 비밀번호 입력 필드
             VStack(alignment: .leading, spacing: 8) {
                 SecureField("비밀번호 입력", text: $password)
-                    .padding()
+                    .frame(height: 50)
+                    .padding(.horizontal, 15)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
             }
-            .padding(.horizontal, 24)
 
             // 비밀번호 확인 입력 필드
             VStack(alignment: .leading, spacing: 8) {
                 SecureField("비밀번호 확인", text: $confirmPassword)
-                    .padding()
+                    .frame(height: 50)
+                    .padding(.horizontal, 15)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
             }
-            .padding(.horizontal, 24)
 
             // 회원가입 버튼
             Button(action: {
@@ -75,7 +75,6 @@ struct RegisterView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
-            .padding(.horizontal, 24)
             .padding(.top, 20)
             .background(
                 NavigationLink(destination: RegisterCompleteView(), isActive: $isRegistered) {
@@ -87,6 +86,9 @@ struct RegisterView: View {
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
+        .navigationBarItems(leading: BackButton()) // 커스텀 백 버튼 추가
+        .navigationBarBackButtonHidden(true)
+        .globalPadding()
     }
     
     private var attributedTitle: AttributedString {
