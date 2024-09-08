@@ -18,6 +18,8 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
 //    private let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     private let temporaryDirectory = FileManager.default.temporaryDirectory
     
+    static let shared = iPhoneConnectivityManager()
+    
     override init() {
         super.init()
         if WCSession.isSupported() {
@@ -40,7 +42,10 @@ class iPhoneConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 print("-------------------")
                 print("Received Data Count: \(self.receivedData.count)")  // 데이터 수신 갯수 확인
                 self.predictionManager.processReceivedData(self.receivedData)  // DreamAi 수신 후 예측 시작
-                self.stageAiPredictionManager.processReceivedData(self.receivedData) // StageAi
+                self.stageAiPredictionManager.appendReceivedData(receivedData)  // 수신된 데이터를 저장만 합니다.
+                
+                // 예측 가능한 시간이면 예측 수행
+                self.stageAiPredictionManager.checkAndPerformPrediction()
             }
         } catch {
             print("Failed to decode received data: \(error.localizedDescription)")

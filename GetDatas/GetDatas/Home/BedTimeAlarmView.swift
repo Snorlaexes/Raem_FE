@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BedTimeAlarmView: View {
     @Binding var selectedTab: Tab
+    @StateObject var stageAiPredictionManager = StageAiPredictionManager()
 
     enum Tab {
         case bedtime
@@ -52,7 +53,7 @@ struct BedTimeAlarmView: View {
                 if selectedTab == .bedtime {
                     BedtimeView()
                 } else {
-                    AlarmView()
+                    AlarmView(stageAiPredictionManager: stageAiPredictionManager)
                 }
             }
             .padding(.horizontal, 16)
@@ -71,16 +72,23 @@ struct BedtimeView: View {
         }
     }()
     @State private var receiveAlarm = true
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone.current  // 로컬 시간대 사용
+        return formatter
+    }()
 
     var body: some View {
         VStack(spacing: 20) {
             DatePicker("Please enter a date", selection: $selectedTime, displayedComponents: .hourAndMinute)
-            .datePickerStyle(WheelDatePickerStyle())
-            .labelsHidden()
-            .padding(.horizontal, 16)
-            .onChange(of: selectedTime) { newValue in
-                UserDefaults.standard.set(newValue, forKey: "selectedBedTime")
-            }
+                .datePickerStyle(WheelDatePickerStyle())
+                .labelsHidden()
+                .padding(.horizontal, 16)
+                .onChange(of: selectedTime) { newValue in
+                    UserDefaults.standard.set(newValue, forKey: "selectedBedTime")
+                }
 
             Text("수면 시간 목표는 7시간 30분 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
@@ -105,6 +113,9 @@ struct BedtimeView: View {
 }
 
 struct AlarmView: View {
+    
+    @ObservedObject var stageAiPredictionManager: StageAiPredictionManager  // StageAi 관련 인스턴스 생성
+
     @State private var selectedTime = {
         if let savedTime = UserDefaults.standard.object(forKey: "selectedAlarmTime") as? Date {
             return savedTime
@@ -112,6 +123,10 @@ struct AlarmView: View {
             return Date()
         }
     }()
+    
+    @State private var tempSelectedTime: Date = Date() // 임시 저장 변수
+    @State private var tempSelectedWakeup: Int = 30 // 임시 저장 변수
+    
     @State private var showingWakeupSheet = false
     @State private var showingRealarmSheet = false
     @State private var selectedWakeup = {
@@ -132,13 +147,11 @@ struct AlarmView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            DatePicker("Please enter a date", selection: $selectedTime, displayedComponents: .hourAndMinute)
-            .datePickerStyle(WheelDatePickerStyle())
-            .labelsHidden()
-            .padding(.horizontal, 16)
-            .onChange(of: selectedTime) { newValue in
-                UserDefaults.standard.set(newValue, forKey: "selectedAlarmTime")
-            }
+            DatePicker("Please enter a date", selection: $tempSelectedTime, displayedComponents: .hourAndMinute)
+                .datePickerStyle(WheelDatePickerStyle())
+                .labelsHidden()
+                .padding(.horizontal, 16)
+//                .environment(\.locale, Locale(identifier: "en_GB")) // 24-hour 포멧
 
             Text("수면 시간 목표는 7시간 30분 입니다.\n취침시간 및 알람시간에 근거함")
                 .font(.system(size: 14))
@@ -166,7 +179,7 @@ struct AlarmView: View {
                         .font(.system(size: 16))
                         .foregroundColor(.black)
                     Spacer()
-                    Text("\(selectedWakeup)분")
+                    Text("\(tempSelectedWakeup)분")
                         .font(.system(size: 16))
                         .foregroundColor(.gray)
                     Button(action: {
@@ -177,16 +190,13 @@ struct AlarmView: View {
                     }
                     .confirmationDialog("기상 시간대", isPresented: $showingWakeupSheet) {
                         Button("30분") {
-                            selectedWakeup = 30
-                            UserDefaults.standard.set(30, forKey: "selectedWakeUp")
+                            tempSelectedWakeup = 30
                         }
                         Button("45분") {
-                            selectedWakeup = 45
-                            UserDefaults.standard.set(45, forKey: "selectedWakeUp")
+                            tempSelectedWakeup = 45
                         }
                         Button("60분") {
-                            selectedWakeup = 60
-                            UserDefaults.standard.set(60, forKey: "selectedWakeUp")
+                            tempSelectedWakeup = 60
                         }
                         Button("취소", role: .cancel) {}
                     }
@@ -242,25 +252,32 @@ struct AlarmView: View {
                         .stroke(Color.gray.opacity(0.5))
                 )
                 .padding(.horizontal, 16)
-
-//                HStack {
-//                    Text("알람 벨소리")
-//                        .font(.system(size: 16))
-//                        .foregroundColor(.black)
-//                    Spacer()
-//                    Text("상쾌한 아침")
-//                        .font(.system(size: 16))
-//                        .foregroundColor(.gray)
-//                    Image(systemName: "chevron.right")
-//                        .foregroundColor(.gray)
-//                }
-//                .padding()
-//                .background(
-//                    RoundedRectangle(cornerRadius: 10)
-//                        .stroke(Color.gray.opacity(0.5))
-//                )
-//                .padding(.horizontal, 16)
             }
+            
+            // "완료" 버튼 추가
+            Button(action: {
+                // "완료" 버튼을 눌렀을 때만 기상 시각과 여분 시간을 저장하고 적용
+                UserDefaults.standard.set(tempSelectedTime, forKey: "selectedAlarmTime")
+                UserDefaults.standard.set(tempSelectedWakeup, forKey: "selectedWakeUp")
+                selectedTime = tempSelectedTime
+                selectedWakeup = tempSelectedWakeup
+                stageAiPredictionManager.setAlarmTime(alarmTime: selectedTime, wakeUpBufferMinutes: selectedWakeup)
+            }) {
+                HStack {
+                    Spacer()
+                    Text("완료")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white)
+                    Spacer()
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.mint) // 다른 UI와 맞추기 위해 스타일 통일
+                )
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 10) // 완료 버튼을 위로 올려서 화면에 잘 보이도록 조정
         }
         .padding(.top, 20) // 상단 여백 추가
     }
@@ -271,4 +288,3 @@ struct BedTimeAlarmView_Previews: PreviewProvider {
         BedTimeAlarmView(selectedTab: .constant(.bedtime))
     }
 }
-
